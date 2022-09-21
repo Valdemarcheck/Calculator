@@ -30,6 +30,20 @@ body {
     width: 95%;
     height: 30%;
     background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.screen-text {
+    color: white;
+    font-size: 5rem;
+    text-align: right;
+}
+
+.placeholder {
+    width: 3rem;
+    background-color: inherit;
 }
 
 .action-section {
@@ -56,4 +70,5 @@ body {
 .operations > button {
     width: 8rem;
     height: 8rem;
+    font-size: 2rem;
 }
