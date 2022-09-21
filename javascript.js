@@ -43,18 +43,20 @@ numberBtns.map(btn => btn.addEventListener('click', () => {
 
 operationBtns.map(btn => btn.addEventListener('click', () => {
     let textRaw = text + btn.textContent;
-    if(textRaw.match(/([+\-\/*]{2})/)){
-        text = text.slice(0, -1);
-        text += btn.textContent;
-        textObj.textContent = text;
-    } else {
-        let expr = text.match(/(\d+[+\-\/*]\d+)+/g);
-        if (expr) {
-            let exprNums = expr[0].split(/([+*\-\/])/);
-            let exprSign = expr[0].match(/([+*\-\/])/);
-            text = +parseFloat(operate(exprSign[0], Number(exprNums[0]), Number(exprNums[2])).toFixed(2));
+    if(textRaw.length !== 1) {
+        if(textRaw.match(/([+\-\/*]{2})/)){
+            text = text.slice(0, -1);
+            text += btn.textContent;
+            textObj.textContent = text;
+        } else {
+            let expr = text.match(/(\d+[+\-\/*]\d+)+/g);
+            if (expr) {
+                let exprNums = expr[0].split(/([+*\-\/])/);
+                let exprSign = expr[0].match(/([+*\-\/])/);
+                text = +parseFloat(operate(exprSign[0], Number(exprNums[0]), Number(exprNums[2])).toFixed(2));
+            }
+            text += btn.textContent;
+            textObj.textContent = text;
         }
-        text += btn.textContent;
-        textObj.textContent = text;
     }
 }));
