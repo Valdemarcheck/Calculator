@@ -1,8 +1,15 @@
+
+/* purple: #8d7cef */
+/* main color: #212225 */
+/* font: #e4e5e9 */
+/* buttons: #2f3034 */
+
 * {
     box-sizing: border-box;
 }
 
 html {
+    font-family: 'Poppins', sans-serif;
     font-size: 10px;
 }
 
@@ -13,13 +20,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #e4e5e9;
 }
 
 .calculator {
     width: 40rem;
     height: 60rem;
-    padding: 1rem;
-    background-color: grey;
+    padding: 2rem;
+    background-color: #212225;
+    border-radius: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,7 +38,8 @@ body {
 .screen {
     width: 95%;
     height: 30%;
-    background-color: black;
+    background-color: #8d7cef;
+    border-radius: 3rem;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -37,7 +47,6 @@ body {
 
 .screen-text {
     display: inline-block;
-    color: white;
     font-size: 4rem;
     width: 100%;
     text-align: right;
@@ -59,18 +68,45 @@ body {
 .numbers {
     display: flex;
     flex-flow: row wrap;
+    gap: 1rem;
     width: 70%;
     height: 70%;
+}
+
+.author {
+    font-size: 1.2rem;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.github {
+    width: 2rem;
+    height: 2rem
+}
+
+.author span {
+    text-align: left;
+    width: 20ch;
 }
 
 .operations {
     display: flex;
     flex-direction: column;
+    gap: 1rem;
 }
 
-.numbers > button,
-.operations > button {
-    width: 8rem;
-    height: 8rem;
-    font-size: 2rem;
+button {
+    width: 7rem;
+    height: 7rem;
+    font-size: 2.3rem;
+    border-radius: 50%;
+    background-color: #2f3034;
+    border: 0;
+}
+
+.delete {
+    background-color: #8d7cef;
 }
