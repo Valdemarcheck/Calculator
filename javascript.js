@@ -43,8 +43,8 @@ numberBtns.map(btn => btn.addEventListener('click', () => {
 
 operationBtns.map(btn => btn.addEventListener('click', () => {
     let textRaw = text + btn.textContent;
-    if(textRaw.length !== 1) {
-        if(textRaw.match(/([+\-\/*]{2})/)){
+    if(textRaw === '-' || textRaw.length !== 1) {
+        if(textRaw.match(/([+\-\/*]{2})/)) {
             text = text.slice(0, -1);
             text += btn.textContent;
             textObj.textContent = text;
