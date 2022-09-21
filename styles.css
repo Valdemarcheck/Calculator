@@ -36,8 +36,10 @@ body {
 }
 
 .screen-text {
+    display: inline-block;
     color: white;
-    font-size: 5rem;
+    font-size: 4rem;
+    width: 100%;
     text-align: right;
 }
 
