@@ -1,4 +1,5 @@
 
+// function with all basic operations
 function operate(operator, num1, num2 = null) {
     let result = 0;
     switch (operator) {
@@ -32,6 +33,7 @@ function operate(operator, num1, num2 = null) {
 const REGEX = new RegExp(`([+\-\/*^])`, 'g');
 const allowedOperands = ['+', '-', '/', '*', '^'];
 
+// performs a certain operation and sets screen text to the result of it
 function doOperation(expr) {
     if (typeof expr === 'object') expr = expr[0];
 
@@ -53,13 +55,9 @@ function doOperation(expr) {
 let textObj = document.querySelector('.screen-text');
 let text = '';
 
-textObj.addEventListener('change', () => {
-    if (textObj.value.length < 1) textObj.value = 'what';
-});
-
-// get all buttons number and operation buttons
+// get all number and operand buttons
 const numberBtns = Array.from(document.querySelectorAll('.number'));
-const operationBtns = Array.from(document.querySelectorAll('.basic'));
+const operandBtns = Array.from(document.querySelectorAll('.basic'));
 const clearBtn = document.querySelector('.clear')
 
 const resultBtn = document.querySelector('.result');
@@ -118,19 +116,18 @@ reverseSignBtn.addEventListener('click', () => {
     }
 });
 
-// perform corresponding operation when a certain operation button was clicked (+, -, * or /)
-operationBtns.map(btn => btn.addEventListener('click', () => {
-    let textRaw = text + btn.textContent; // how the text looks before application
-    if(textRaw === '-' || textRaw.length > 1) { // check whether the length of the screen text is less than 1
-        // check if textRaw ends with 2 operation signs in a row
+// perform corresponding operand when a certain operand button was clicked (+, -, * or /)
+operandBtns.map(btn => btn.addEventListener('click', () => {
+    let textRaw = text + btn.textContent; // how the text looks like after appending an operand sign
+    if(textRaw.length > 1) { // execute if the length textRaw is more than 1
+        // check if textRaw ends with 2 operand signs in a row
         if(textRaw.match(/([+\-\/*^]{2})/)) {
             text = text.slice(0, -1); // delete previous sign and apply a new one
             text += btn.textContent;
             textObj.textContent = text;
-        } else { // else dissect screen text onto numbers and a sign, and perform a certain operation depending on that sign
+        } else if (textRaw !== '-') { // else dissect screen text onto numbers and a sign, and perform a certain operand depending on that sign
             let expr = text.match(/(\d+[+\-\/*^]\d+)/g);
-            // check if there are 2 numbers and a sign among them, and then perform calculations
-            if (expr) doOperation(expr);
+            if (expr) doOperation(expr); // check if expr is valid (match() didn't return undefined), perform calculations if so
             text += btn.textContent;
             textObj.textContent = text;
         }
