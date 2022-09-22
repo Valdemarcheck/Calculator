@@ -48,6 +48,12 @@ function operate(operator, num1, num2 = null) {
         case 'ctg()':
             result = 1 / Math.tan(num1);
             break;
+        case 'log10':
+            result = Math.log10(num1);
+            break;
+        case 'log2':
+            result = Math.log2(num1);
+            break;
     }
     return parseFloat(result.toFixed(10))+'';
 }
@@ -78,8 +84,9 @@ let text = '';
 const numberBtns = Array.from(document.querySelectorAll('.number'));
 const operandBtns = Array.from(document.querySelectorAll('.operations > .basic'));
 const trigoBtns = document.querySelectorAll('.section > .basic');
+const logarithmBtns = document.querySelectorAll('.log');
 const factorialBtn = document.querySelector('.factorial');
-const clearBtn = document.querySelector('.clear')
+const clearBtn = document.querySelector('.clear');
 const resultBtn = document.querySelector('.result');
 const deleteBtn = document.querySelector('.delete');
 const percentBtn = document.querySelector('.percent');
@@ -87,14 +94,18 @@ const sqrtBtn = document.querySelector('.sqrt');
 const reverseSignBtn = document.querySelector('.plus-minus');
 
 // operands that work only with a single number(like 956 or -15), not two (like 19+5 or -1.5/5)
-const specialOperands = [percentBtn, sqrtBtn, factorialBtn, ...trigoBtns];
+const specialOperands = [percentBtn, sqrtBtn, 
+    factorialBtn, ...trigoBtns, ...logarithmBtns];
 specialOperands.map(btn => btn.addEventListener('click', () => {
     if (text.match(/(-?\d+[+\-\/*^])/)) {
         text = text.slice(0, -1);
     }
     if(text.match(/(-?\d+)/) || text.match(/(-?\d+\.\d+)/)) {
         let number = Number(text);
-        text = operate(btn.textContent, number);
+        // if a function is a logarithm, set buttonText to 'log' + logarithm base
+        // otherwise just set it to button's textContent
+        let buttonText = (!btn.textContent.match('log')) ? btn.textContent : 'log' + btn.textContent.match(/(\d+)/g);
+        text = operate(buttonText, number);
         textObj.textContent = text;
     }
 }));
@@ -154,10 +165,7 @@ operandBtns.map(btn => btn.addEventListener('click', () => {
     }
 }));
 
-// EXTRAS FUNCTIONALITY
-
-// STYLES AND ANIMATIONS
-
+// extras panel setup
 const extras = document.querySelector('.extras'); // initially hide extras panel
 extras.style.display = 'none';
 extras.classList.toggle('comeBack');
