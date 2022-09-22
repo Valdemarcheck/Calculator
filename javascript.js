@@ -1,4 +1,6 @@
 
+//FUNCTIONALITY
+
 // function with all basic operations
 function operate(operator, num1, num2 = null) {
     let result = 0;
@@ -11,11 +13,9 @@ function operate(operator, num1, num2 = null) {
             break;
         case '+':
             result = num1 + num2;
-            console.log(result)
             break;
         case '-':
             result = num1 - num2;
-            console.log(result)
             break;
         case '*':
             result = num1 * num2;
@@ -26,12 +26,21 @@ function operate(operator, num1, num2 = null) {
         case '^':
             result = num1 ** num2;
             break;
+        case 'sin()':
+            result = Math.sin(num1);
+            break;
+        case 'cos()':
+            result = Math.cos(num1);
+            break;
+        case 'tg()':
+            result = Math.tan(num1);
+            break;
+        case 'ctg()':
+            result = 1 / Math.tan(num1);
+            break;
     }
     return parseFloat(result.toFixed(10))+'';
 }
-
-const REGEX = new RegExp(`([+\-\/*^])`, 'g');
-const allowedOperands = ['+', '-', '/', '*', '^'];
 
 // performs a certain operation and sets screen text to the result of it
 function doOperation(expr) {
@@ -57,8 +66,10 @@ let text = '';
 
 // get all number and operand buttons
 const numberBtns = Array.from(document.querySelectorAll('.number'));
-const operandBtns = Array.from(document.querySelectorAll('.basic'));
+const operandBtns = Array.from(document.querySelectorAll('.operations > .basic'));
 const clearBtn = document.querySelector('.clear')
+// add trigo actions
+const trigoBtns = document.querySelectorAll('.section > .basic');
 
 const resultBtn = document.querySelector('.result');
 const deleteBtn = document.querySelector('.delete');
@@ -67,7 +78,7 @@ const sqrtBtn = document.querySelector('.sqrt');
 const reverseSignBtn = document.querySelector('.plus-minus');
 
 // operands that work only with a single number(like 956 or -15), not two (like 19+5 or -1.5/5)
-const specialOperands = [percentBtn, sqrtBtn];
+const specialOperands = [percentBtn, sqrtBtn, ...trigoBtns];
 specialOperands.map(btn => btn.addEventListener('click', () => {
     if (text.match(/(-?\d+[+\-\/*^])/)) {
         text = text.slice(0, -1);
@@ -75,7 +86,6 @@ specialOperands.map(btn => btn.addEventListener('click', () => {
     if(text.match(/(-?\d+)/) || text.match(/(-?\d+\.\d+)/)) {
         let number = Number(text);
         text = operate(btn.textContent, number);
-        if (text === 'NaN') text = '∞';
         textObj.textContent = text;
     }
 }));
@@ -83,18 +93,20 @@ specialOperands.map(btn => btn.addEventListener('click', () => {
 // delete one character when DELETE button is pressed
 deleteBtn.addEventListener('click', () => {
     text = text.slice(0, -1);
+    if (text === '') text = '...';
     textObj.textContent = text;
 });
 
 // clear screen text when CLEAR button is pressed
 clearBtn.addEventListener('click', () => {
-    text = '';
+    text = '...';
     textObj.textContent = text;
 });
 
 // add ability for certain buttons to append their textContent value
 // onto the calculator screen
 numberBtns.map(btn => btn.addEventListener('click', () => {
+    if (text === '...') text = '';
     text += btn.textContent;
     textObj.textContent = text;
 }));
@@ -133,3 +145,18 @@ operandBtns.map(btn => btn.addEventListener('click', () => {
         }
     }
 }));
+
+// EXTRAS FUNCTIONALITY
+
+// STYLES AND ANIMATIONS
+
+const extras = document.querySelector('.extras'); // initially hide extras panel
+extras.style.display = 'none';
+const extrasBtn = document.querySelector('.extras-unlock');
+
+// toggle between hidden and showing when clicking the button
+extrasBtn.addEventListener('click', () => {
+    let state = extras.style.display;
+    (state === "none") ? state = "block" : state = "none";
+    extras.style.display = state;
+});

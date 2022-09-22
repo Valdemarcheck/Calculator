@@ -6,6 +6,7 @@
 
 * {
     box-sizing: border-box;
+    z-index: 1;
 }
 
 html {
@@ -24,6 +25,12 @@ body {
 }
 
 /* Calculator and general styles */
+
+.full-calculator {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 2rem;
+}
 
 .calculator {
     width: 50rem;
@@ -118,9 +125,9 @@ button {
     width: 7rem;
     height: 7rem;
     font-size: 2.3rem;
-    border-radius: 50%;
+    border-radius: 10rem;
     background-color: #2f3034;
-    border: 0;
+    border: none;
     color: #e4e5e9;
     box-shadow: 1px 1px 2px black;
 }
@@ -154,14 +161,37 @@ button:active {
 /* Extras styles */
 
 .extras-unlock {
-    position: relative;
-    bottom: 30rem;
-    left: 82rem;
     border: 1px solid #efd07c;
+    z-index: 2;
 }
 
-button:active {
+.extras-unlock:active {
     box-shadow: none;
     background-color: #efd07c;
     color: #1a1b1f;
+}
+
+.extras {
+    display: flex;
+    flex-direction: column;
+    width: 10rem;
+    height: 63vh;
+    padding: 1rem;
+    border-radius: 2rem;
+    background-color: #212225;
+    box-shadow: 1px 1px 2px black;
+    z-index: 0;
+}
+
+.section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.dummy {
+    flex: 1;
+    width: 100%;
 }
