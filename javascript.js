@@ -133,7 +133,7 @@ pointBtn.addEventListener(eventType, () => {
             let textSplit = text.split(/[+\-\/*^]/g);
             console.log(textSplit);
             // execute if the last number of expression is an Integer (doesn't include '.' inside of it) and is not '0.0'
-            if (Number(textSplit[textSplit.length-1]) % 1 === 0 && text.slice(-1, -2) !== '.0') { 
+            if (Number(textSplit[textSplit.length-1]) % 1 === 0 && text.slice(text.length-2) !== '.0') { 
                 text += '.';
             }
         } else { // else replace the last sign with a dot (because it is 100% an operand)
