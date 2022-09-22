@@ -1,5 +1,13 @@
 
+// BUG: dot doesn't replace operands
+// BUG: it's possible to get NaN with ROOT because it doesn't cut off operands sometimes
+
 //FUNCTIONALITY
+
+// check user's platform (PC or mobile)
+let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+// choose an event type for buttons that is appropriate to the platform
+let eventType = (isMobile) ? 'touchend' : 'click';
 
 // function with all basic operations
 function operate(operator, num1, num2 = null) {
@@ -96,7 +104,7 @@ const reverseSignBtn = document.querySelector('.plus-minus');
 // operands that work only with a single number(like 956 or -15), not two (like 19+5 or -1.5/5)
 const specialOperands = [percentBtn, sqrtBtn, 
     factorialBtn, ...trigoBtns, ...logarithmBtns];
-specialOperands.map(btn => btn.addEventListener('click', () => {
+specialOperands.map(btn => btn.addEventListener(eventType, () => {
     if (text.match(/(-?\d+[+\-\/*^])/)) {
         text = text.slice(0, -1);
     }
@@ -111,20 +119,20 @@ specialOperands.map(btn => btn.addEventListener('click', () => {
 }));
 
 // delete one character when DELETE button is pressed
-deleteBtn.addEventListener('click', () => {
+deleteBtn.addEventListener(eventType, () => {
     text = text.slice(0, -1);
     if (text === '') text = '...';
     textObj.textContent = text;
 });
 
 // clear screen text when CLEAR button is pressed
-clearBtn.addEventListener('click', () => {
+clearBtn.addEventListener(eventType, () => {
     text = '...';
     textObj.textContent = text;
 });
 
 // calculate results of an expression when the RESULT button was clicked
-resultBtn.addEventListener('click', () => {
+resultBtn.addEventListener(eventType, () => {
     if(text.length > 1) {
         if (text.match(/(\d+[+\-\/*^]\d+)/)) doOperation(text);
         else if (text.match(/(\d+[+\-\/*^])/)) text = text.slice(0, -1); 
@@ -133,7 +141,7 @@ resultBtn.addEventListener('click', () => {
 }); 
 
 // reverse the sign of the number when clicked (from negative to positive and vice versa)
-reverseSignBtn.addEventListener('click', () => {
+reverseSignBtn.addEventListener(eventType, () => {
     if (text.match(/(-?\d+[+\-\/*^]?)/)) {
         text = (text[0] === '-') ? text.slice(1) : '-' + text;
         textObj.textContent = text;
@@ -142,14 +150,14 @@ reverseSignBtn.addEventListener('click', () => {
 
 // add ability for certain buttons to append their textContent value
 // onto the calculator screen
-numberBtns.map(btn => btn.addEventListener('click', () => {
+numberBtns.map(btn => btn.addEventListener(eventType, () => {
     if (text === '...' || Number(text) === 0) text = '';
     text += btn.textContent;
     textObj.textContent = text;
 }));
 
 // perform corresponding operand when a certain operand button was clicked (+, -, * or /)
-operandBtns.map(btn => btn.addEventListener('click', () => {
+operandBtns.map(btn => btn.addEventListener(eventType, () => {
     let textRaw = text + btn.textContent; // how the text looks like after appending an operand sign
     if(textRaw.match(/([+\-\/*^]{2})/)) { // execute this if textRaw ends with 2 operand signs in a row
         text = text.slice(0, -1); // delete previous sign and apply a new one
@@ -171,7 +179,7 @@ extras.classList.toggle('comeBack');
 const extrasBtn = document.querySelector('.extras-unlock');
 
 // toggle between hidden and showing when clicking the button
-extrasBtn.addEventListener('click', () => {
+extrasBtn.addEventListener(eventType, () => {
     let state = extras.style.display;
     (state === "none") ? state = "block" : state = "none";
     extras.style.display = state;
