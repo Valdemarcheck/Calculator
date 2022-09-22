@@ -133,9 +133,11 @@ pointBtn.addEventListener(eventType, () => {
         // execute if the last number of expression is an Integer (doesn't include '.' inside of it)
         if (Number(textSplit[textSplit.length-1]) % 1 === 0) { 
             text += '.';
-            textObj.textContent = text;
         }
+    } else { // else replace the last sign with a dot (because it is 100% an operand)
+        text = text.slice(0, text.length - 1) + '.'
     }
+    textObj.textContent = text;
 });
 
 // delete one character when DELETE button is pressed
@@ -179,7 +181,8 @@ numberBtns.map(btn => btn.addEventListener(eventType, () => {
 // perform corresponding operand when a certain operand button was clicked (+, -, * or /)
 operandBtns.map(btn => btn.addEventListener(eventType, () => {
     let textRaw = text + btn.textContent; // how the text looks like after appending an operand sign
-    if(textRaw.match(/([+\-\/*^]{2})/)) { // execute this if textRaw ends with 2 operand signs in a row
+    // execute this if textRaw ends with 2 operands in a row or the last sign is a point ('.')
+    if(textRaw.match(/([+\-\/*^]{2})/) || text[text.length - 1] === '.') { 
         text = text.slice(0, -1); // delete previous sign and apply a new one
         text += btn.textContent;
         textObj.textContent = text;
