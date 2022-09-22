@@ -5,6 +5,16 @@
 function operate(operator, num1, num2 = null) {
     let result = 0;
     switch (operator) {
+        case '!':
+            if (num1 % 1 !== 0)  {
+                result = 0;
+            } else {
+                result = 1;
+                for(let i = num1; i > 1; i--) {
+                    result *= i;
+                }
+            }
+            break;
         case '%':
             result = num1 / 100;
             break;
@@ -67,10 +77,9 @@ let text = '';
 // get all number and operand buttons
 const numberBtns = Array.from(document.querySelectorAll('.number'));
 const operandBtns = Array.from(document.querySelectorAll('.operations > .basic'));
-const clearBtn = document.querySelector('.clear')
-// add trigo actions
 const trigoBtns = document.querySelectorAll('.section > .basic');
-
+const factorialBtn = document.querySelector('.factorial');
+const clearBtn = document.querySelector('.clear')
 const resultBtn = document.querySelector('.result');
 const deleteBtn = document.querySelector('.delete');
 const percentBtn = document.querySelector('.percent');
@@ -78,7 +87,7 @@ const sqrtBtn = document.querySelector('.sqrt');
 const reverseSignBtn = document.querySelector('.plus-minus');
 
 // operands that work only with a single number(like 956 or -15), not two (like 19+5 or -1.5/5)
-const specialOperands = [percentBtn, sqrtBtn, ...trigoBtns];
+const specialOperands = [percentBtn, sqrtBtn, factorialBtn, ...trigoBtns];
 specialOperands.map(btn => btn.addEventListener('click', () => {
     if (text.match(/(-?\d+[+\-\/*^])/)) {
         text = text.slice(0, -1);
@@ -103,14 +112,6 @@ clearBtn.addEventListener('click', () => {
     textObj.textContent = text;
 });
 
-// add ability for certain buttons to append their textContent value
-// onto the calculator screen
-numberBtns.map(btn => btn.addEventListener('click', () => {
-    if (text === '...') text = '';
-    text += btn.textContent;
-    textObj.textContent = text;
-}));
-
 // calculate results of an expression when the RESULT button was clicked
 resultBtn.addEventListener('click', () => {
     if(text.length > 1) {
@@ -128,6 +129,14 @@ reverseSignBtn.addEventListener('click', () => {
     }
 });
 
+// add ability for certain buttons to append their textContent value
+// onto the calculator screen
+numberBtns.map(btn => btn.addEventListener('click', () => {
+    if (text === '...' || Number(text) === 0) text = '';
+    text += btn.textContent;
+    textObj.textContent = text;
+}));
+
 // perform corresponding operand when a certain operand button was clicked (+, -, * or /)
 operandBtns.map(btn => btn.addEventListener('click', () => {
     let textRaw = text + btn.textContent; // how the text looks like after appending an operand sign
@@ -140,7 +149,6 @@ operandBtns.map(btn => btn.addEventListener('click', () => {
         } else if (textRaw !== '-') { // else dissect screen text onto numbers and a sign, and perform a certain operand depending on that sign
             let expr = text.match(/(\d+[+\-\/*^]\d+)/g);
             if (expr) doOperation(expr); // check if expr is valid (match() didn't return undefined), perform calculations if so
-            text += btn.textContent;
             textObj.textContent = text;
         }
     }
@@ -152,6 +160,8 @@ operandBtns.map(btn => btn.addEventListener('click', () => {
 
 const extras = document.querySelector('.extras'); // initially hide extras panel
 extras.style.display = 'none';
+extras.classList.toggle('comeBack');
+
 const extrasBtn = document.querySelector('.extras-unlock');
 
 // toggle between hidden and showing when clicking the button
