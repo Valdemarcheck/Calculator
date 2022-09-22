@@ -1,8 +1,6 @@
 
-// BUG: dot doesn't replace operands
 // BUG: it's possible to get NaN with ROOT because it doesn't cut off operands sometimes
-// BUG: when I write 0 and then try to write "." 0 disappears
-// BUG: when I wrote 1-0.1 and then added ^ and entire -0.1 disappeared
+// BUG: ^ can vanish the second part of the expression
 // BUG: 0/0 is infinity
 
 //FUNCTIONALITY
@@ -126,10 +124,12 @@ specialOperands.map(btn => btn.addEventListener(eventType, () => {
 
 // append a dot if the last character is a number
 pointBtn.addEventListener(eventType, () => {
-    // execute if the last character of expression is a number
-    if (Number(text[text.length-1])) { 
+
+    // execute if the last character of expression is a number (and explicitly check for zero because otherwise it returns 'false')
+    if (Number(text[text.length-1]) || text[text.length-1] === '0') { 
         // dissect an expression to get all numbers
-        let textSplit = text.split(/[+\-\/*^]/g); 
+        let textSplit = text.split(/[+\-\/*^]/g);
+        console.log(textSplit);
         // execute if the last number of expression is an Integer (doesn't include '.' inside of it)
         if (Number(textSplit[textSplit.length-1]) % 1 === 0) { 
             text += '.';
