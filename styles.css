@@ -24,7 +24,7 @@ body {
 }
 
 .calculator {
-    width: 40rem;
+    width: 50rem;
     height: 60rem;
     padding: 2rem;
     background-color: #212225;
@@ -38,7 +38,7 @@ body {
 
 .screen {
     width: 95%;
-    height: 30%;
+    height: 25%;
     background-color: #8d7cef;
     border-radius: 3rem;
     box-shadow: 1px 1px 2px black;
@@ -61,11 +61,9 @@ body {
 }
 
 .action-section {
-    width: 95%;
-    flex-basis: 90%;
+    width: 90%;
     display: flex;
     justify-content: center;
-    gap: 1rem;
 }
 
 .numbers {
@@ -74,6 +72,24 @@ body {
     gap: 1rem;
     width: 70%;
     height: 70%;
+}
+
+.operations {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 100%;
+    width: 20rem;
+    gap: 1rem;
+}
+
+.special-operations {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 1rem;
+    width: 90%;
+    height: 40%;
 }
 
 .author {
@@ -96,12 +112,6 @@ body {
     color: #e4e5e9;
 }
 
-.operations {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
 button {
     width: 7rem;
     height: 7rem;
@@ -118,6 +128,11 @@ button:active {
     background-color: #a292ff;
 }
 
-.delete {
+.result {
     background-color: #8d7cef;
+}
+
+.clear,
+.delete {
+    border: 1px solid #8d7cef;
 }
