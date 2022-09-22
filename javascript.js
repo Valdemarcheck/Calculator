@@ -1,9 +1,6 @@
 
-// BUG: it's possible to get NaN with ROOT because it doesn't cut off operands sometimes
+// BUG: it's possible to get ∞ with ROOT because it doesn't cut off operands sometimes
 // BUG: ^ can vanish the second part of the expression
-// BUG: big N! is infinity
-
-//FUNCTIONALITY
 
 // check user's platform (PC or mobile)
 let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -174,7 +171,8 @@ reverseSignBtn.addEventListener(eventType, () => {
 // add ability for certain buttons to append their textContent value
 // onto the calculator screen
 numberBtns.map(btn => btn.addEventListener(eventType, () => {
-    if (text === '...' || Number(text) === 0) text = '';
+    // clear screen text if it equals ∞, 0 or ...
+    if (text === '...' || text === '∞' || Number(text) === 0) text = '';
     text += btn.textContent;
     textObj.textContent = text;
 }));
@@ -183,7 +181,8 @@ numberBtns.map(btn => btn.addEventListener(eventType, () => {
 operandBtns.map(btn => btn.addEventListener(eventType, () => {
     let textRaw = text + btn.textContent; // how the text looks like after appending an operand sign
     // execute this if textRaw ends with 2 operands in a row or the last sign is a point ('.')
-    if(textRaw.match(/([+\-\/*^]{2})/) || text[text.length - 1] === '.') { 
+    // also check for ∞ sign to replace it
+    if(textRaw.match(/([+\-\/*^]{2})/) || text[text.length - 1] === '.' || text === '∞') { 
         text = text.slice(0, -1); // delete previous sign and apply a new one
         text += btn.textContent;
         textObj.textContent = text;
