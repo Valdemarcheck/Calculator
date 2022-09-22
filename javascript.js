@@ -1,7 +1,7 @@
 
 // BUG: it's possible to get NaN with ROOT because it doesn't cut off operands sometimes
 // BUG: ^ can vanish the second part of the expression
-// BUG: 0/0 is infinity
+// BUG: big N! is infinity
 
 //FUNCTIONALITY
 
@@ -81,7 +81,7 @@ function doOperation(expr) {
     let exprSign = expr.match(/[+\-\/*^]/g)[0];
 
     text = operate(exprSign, Number(exprNums[0]), Number(exprNums[1]));
-    if (Number(text) >= Infinity || text === 'NaN')  text = '∞';
+    if (!isFinite(text)) text = '∞'; // check if text == Infinity or NaN
     textObj.textContent = text;
 }
 
@@ -118,6 +118,7 @@ specialOperands.map(btn => btn.addEventListener(eventType, () => {
         // otherwise just set it to button's textContent
         let buttonText = (!btn.textContent.match('log')) ? btn.textContent : 'log' + btn.textContent.match(/(\d+)/g);
         text = operate(buttonText, number);
+        if (!isFinite(text)) text = '∞'; // check if text == Infinity or NaN
         textObj.textContent = text;
     }
 }));
@@ -197,7 +198,6 @@ operandBtns.map(btn => btn.addEventListener(eventType, () => {
 // extras panel setup
 const extras = document.querySelector('.extras'); // initially hide extras panel
 extras.style.display = 'none';
-extras.classList.toggle('comeBack');
 
 const extrasBtn = document.querySelector('.extras-unlock');
 
