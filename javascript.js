@@ -151,17 +151,15 @@ numberBtns.map(btn => btn.addEventListener('click', () => {
 // perform corresponding operand when a certain operand button was clicked (+, -, * or /)
 operandBtns.map(btn => btn.addEventListener('click', () => {
     let textRaw = text + btn.textContent; // how the text looks like after appending an operand sign
-    if(textRaw.length > 1) { // execute if the length textRaw is more than 1
-        // check if textRaw ends with 2 operand signs in a row
-        if(textRaw.match(/([+\-\/*^]{2})/)) {
-            text = text.slice(0, -1); // delete previous sign and apply a new one
-            text += btn.textContent;
-            textObj.textContent = text;
-        } else if (textRaw !== '-') { // else dissect screen text onto numbers and a sign, and perform a certain operand depending on that sign
-            let expr = text.match(/(\d+[+\-\/*^]\d+)/g);
-            if (expr) doOperation(expr); // check if expr is valid (match() didn't return undefined), perform calculations if so
-            textObj.textContent = text;
-        }
+    if(textRaw.match(/([+\-\/*^]{2})/)) { // execute this if textRaw ends with 2 operand signs in a row
+        text = text.slice(0, -1); // delete previous sign and apply a new one
+        text += btn.textContent;
+        textObj.textContent = text;
+    } else { // else dissect screen text onto numbers and a sign, and perform a certain operand depending on that sign
+        let expr = text.match(/(\d+[+\-\/*^]\d+)/g);
+        if (expr) doOperation(expr); // check if expr is valid (match() didn't return undefined), perform calculations if so
+        text += btn.textContent;
+        textObj.textContent = text;
     }
 }));
 

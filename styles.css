@@ -34,7 +34,7 @@ body {
 
 .calculator {
     width: 50rem;
-    height: 60rem;
+    height: 60vh;
     padding: 2rem;
     background-color: #212225;
     border-radius: 2rem;
@@ -176,7 +176,7 @@ button:active {
     flex-direction: column;
     position: relative;
     width: 10rem;
-    height: 63vh;
+    height: 60vh;
     padding: 1rem;
     border-radius: 2rem;
     background-color: #212225;
