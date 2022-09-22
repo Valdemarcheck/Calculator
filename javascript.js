@@ -1,6 +1,9 @@
 
 // BUG: dot doesn't replace operands
 // BUG: it's possible to get NaN with ROOT because it doesn't cut off operands sometimes
+// BUG: when I write 0 and then try to write "." 0 disappears
+// BUG: when I wrote 1-0.1 and then added ^ and entire -0.1 disappeared
+// BUG: 0/0 is infinity
 
 //FUNCTIONALITY
 
@@ -93,13 +96,16 @@ const numberBtns = Array.from(document.querySelectorAll('.number'));
 const operandBtns = Array.from(document.querySelectorAll('.operations > .basic'));
 const trigoBtns = document.querySelectorAll('.section > .basic');
 const logarithmBtns = document.querySelectorAll('.log');
+
 const factorialBtn = document.querySelector('.factorial');
+const sqrtBtn = document.querySelector('.sqrt');
+const percentBtn = document.querySelector('.percent');
+const reverseSignBtn = document.querySelector('.plus-minus');
+
+const pointBtn = document.querySelector('.point');
 const clearBtn = document.querySelector('.clear');
 const resultBtn = document.querySelector('.result');
 const deleteBtn = document.querySelector('.delete');
-const percentBtn = document.querySelector('.percent');
-const sqrtBtn = document.querySelector('.sqrt');
-const reverseSignBtn = document.querySelector('.plus-minus');
 
 // operands that work only with a single number(like 956 or -15), not two (like 19+5 or -1.5/5)
 const specialOperands = [percentBtn, sqrtBtn, 
@@ -117,6 +123,20 @@ specialOperands.map(btn => btn.addEventListener(eventType, () => {
         textObj.textContent = text;
     }
 }));
+
+// append a dot if the last character is a number
+pointBtn.addEventListener(eventType, () => {
+    // execute if the last character of expression is a number
+    if (Number(text[text.length-1])) { 
+        // dissect an expression to get all numbers
+        let textSplit = text.split(/[+\-\/*^]/g); 
+        // execute if the last number of expression is an Integer (doesn't include '.' inside of it)
+        if (Number(textSplit[textSplit.length-1]) % 1 === 0) { 
+            text += '.';
+            textObj.textContent = text;
+        }
+    }
+});
 
 // delete one character when DELETE button is pressed
 deleteBtn.addEventListener(eventType, () => {
