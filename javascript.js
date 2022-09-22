@@ -39,7 +39,7 @@ function doOperation(expr) {
     if (exprNums.length > 2) {
         exprNums.splice(0, 1);
         exprNums[0] = exprNums[0]*-1+'';
-        expr = expr.slice(1, -1);
+        expr = expr.slice(1);
     };
 
     let exprSign = expr.match(/[+\-\/*^]/g)[0];
@@ -68,7 +68,7 @@ const percentBtn = document.querySelector('.percent');
 const sqrtBtn = document.querySelector('.sqrt');
 const reverseSignBtn = document.querySelector('.plus-minus');
 
-// operands that work only with a single number, not two
+// operands that work only with a single number(like 956 or -15), not two (like 19+5 or -1.5/5)
 const specialOperands = [percentBtn, sqrtBtn];
 specialOperands.map(btn => btn.addEventListener('click', () => {
     if (text.match(/(-?\d+[+\-\/*^])/)) {
@@ -110,14 +110,10 @@ resultBtn.addEventListener('click', () => {
     }
 }); 
 
-// reverse the sign of the 
+// reverse the sign of the number when clicked (from negative to positive and vice versa)
 reverseSignBtn.addEventListener('click', () => {
-    if (text.match(/(-?\d+[+\-\/*^])/)) {
-        text = text.slice(0, -1);
-    }
-    if(text.match(/(-?\d+)/) || text.match(/(-?\d+\.\d+)/)) {
-        let number = Number(text);
-        text = operate('%', number);
+    if (text.match(/(-?\d+[+\-\/*^]?)/)) {
+        text = (text[0] === '-') ? text.slice(1) : '-' + text;
         textObj.textContent = text;
     }
 });
