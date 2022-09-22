@@ -1,6 +1,9 @@
 
 // BUG: it's possible to get ∞ with ROOT because it doesn't cut off operands sometimes
 // BUG: ^ can vanish the second part of the expression
+// BUG: you can stack dots with zeros
+// BUG: you can put zeros after a number in a decimal
+// BUG: 0. + 0 = 0, not 0.0
 
 // check user's platform (PC or mobile)
 let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -122,32 +125,33 @@ specialOperands.map(btn => btn.addEventListener(eventType, () => {
 
 // append a dot if the last character is a number
 pointBtn.addEventListener(eventType, () => {
-
-    // execute if the last character of expression is a number (and explicitly check for zero because otherwise it returns 'false')
-    if (Number(text[text.length-1]) || text[text.length-1] === '0') { 
-        // dissect an expression to get all numbers
-        let textSplit = text.split(/[+\-\/*^]/g);
-        console.log(textSplit);
-        // execute if the last number of expression is an Integer (doesn't include '.' inside of it)
-        if (Number(textSplit[textSplit.length-1]) % 1 === 0) { 
-            text += '.';
+    // execute ONLY if the string isn't empty
+    if (text.length !== 0) {
+        // execute if the last character of expression is a number (and explicitly check for zero because otherwise it returns 'false')
+        if (Number(text[text.length-1]) || text[text.length-1] === '0') { 
+            // dissect an expression to get all numbers
+            let textSplit = text.split(/[+\-\/*^]/g);
+            console.log(textSplit);
+            // execute if the last number of expression is an Integer (doesn't include '.' inside of it) and is not '0.0'
+            if (Number(textSplit[textSplit.length-1]) % 1 === 0 && text.slice(-1, -2) !== '.0') { 
+                text += '.';
+            }
+        } else { // else replace the last sign with a dot (because it is 100% an operand)
+            text = text.slice(0, text.length - 1) + '.'
         }
-    } else { // else replace the last sign with a dot (because it is 100% an operand)
-        text = text.slice(0, text.length - 1) + '.'
+        textObj.textContent = text;
     }
-    textObj.textContent = text;
 });
 
 // delete one character when DELETE button is pressed
 deleteBtn.addEventListener(eventType, () => {
     text = text.slice(0, -1);
-    if (text === '') text = '...';
     textObj.textContent = text;
 });
 
 // clear screen text when CLEAR button is pressed
 clearBtn.addEventListener(eventType, () => {
-    text = '...';
+    text = '';
     textObj.textContent = text;
 });
 
@@ -171,26 +175,29 @@ reverseSignBtn.addEventListener(eventType, () => {
 // add ability for certain buttons to append their textContent value
 // onto the calculator screen
 numberBtns.map(btn => btn.addEventListener(eventType, () => {
-    // clear screen text if it equals ∞, 0 or ...
-    if (text === '...' || text === '∞' || Number(text) === 0) text = '';
+    // clear screen text if it equals ∞ or 0
+    if (text === '∞' || text === '0') text = '';
     text += btn.textContent;
     textObj.textContent = text;
 }));
 
 // perform corresponding operand when a certain operand button was clicked (+, -, * or /)
 operandBtns.map(btn => btn.addEventListener(eventType, () => {
-    let textRaw = text + btn.textContent; // how the text looks like after appending an operand sign
-    // execute this if textRaw ends with 2 operands in a row or the last sign is a point ('.')
-    // also check for ∞ sign to replace it
-    if(textRaw.match(/([+\-\/*^]{2})/) || text[text.length - 1] === '.' || text === '∞') { 
-        text = text.slice(0, -1); // delete previous sign and apply a new one
-        text += btn.textContent;
-        textObj.textContent = text;
-    } else { // else dissect screen text onto numbers and a sign, and perform a certain operand depending on that sign
-        let expr = text.match(/(\d+[+\-\/*^]\d+)/g);
-        if (expr) doOperation(expr); // check if expr is valid (match() didn't return undefined), perform calculations if so
-        text += btn.textContent;
-        textObj.textContent = text;
+    let textRaw = text + btn.textContent; // how the text will look after appending an operand sign
+    
+    if(textRaw.length > 1) {
+        // execute this if textRaw ends with 2 operands in a row or the last sign is a point ('.')
+        // also check for ∞ sign to replace it
+        if(textRaw.match(/([+\-\/*^]{2})/) || (text[text.length - 1] === '.' || text === '∞')) { 
+            text = text.slice(0, -1); // delete previous sign and apply a new one
+            text += btn.textContent;
+            textObj.textContent = text;
+        } else  { // else dissect screen text onto numbers and a sign, and perform a certain operand depending on that sign
+            let expr = text.match(/(\d+[+\-\/*^]\d+)/g);
+            if (expr) doOperation(expr); // check if expr is valid (match() didn't return undefined), perform calculations if so
+            text += btn.textContent;
+            textObj.textContent = text;
+        }
     }
 }));
 
