@@ -26,7 +26,7 @@ function operate(operator, num1, num2 = null) {
             result = num1 ** num2;
             break;
     }
-    return parseFloat(result.toFixed(10));
+    return parseFloat(result.toFixed(10))+'';
 }
 
 const REGEX = new RegExp(`([+\-\/*^])`, 'g');
@@ -44,7 +44,7 @@ function doOperation(expr) {
 
     let exprSign = expr.match(/[+\-\/*^]/g)[0];
 
-    text = operate(exprSign, Number(exprNums[0]), Number(exprNums[1]))+'';
+    text = operate(exprSign, Number(exprNums[0]), Number(exprNums[1]));
     if (Number(text) >= Infinity || text === 'NaN')  text = '∞';
     textObj.textContent = text;
 }
@@ -59,13 +59,28 @@ textObj.addEventListener('change', () => {
 
 // get all buttons number and operation buttons
 const numberBtns = Array.from(document.querySelectorAll('.number'));
-const operationBtns = Array.from(document.querySelectorAll('.operations > button'));
+const operationBtns = Array.from(document.querySelectorAll('.basic'));
 const clearBtn = document.querySelector('.clear')
 
 const resultBtn = document.querySelector('.result');
 const deleteBtn = document.querySelector('.delete');
 const percentBtn = document.querySelector('.percent');
 const sqrtBtn = document.querySelector('.sqrt');
+const reverseSignBtn = document.querySelector('.plus-minus');
+
+// operands that work only with a single number, not two
+const specialOperands = [percentBtn, sqrtBtn];
+specialOperands.map(btn => btn.addEventListener('click', () => {
+    if (text.match(/(-?\d+[+\-\/*^])/)) {
+        text = text.slice(0, -1);
+    }
+    if(text.match(/(-?\d+)/) || text.match(/(-?\d+\.\d+)/)) {
+        let number = Number(text);
+        text = operate(btn.textContent, number);
+        if (text === 'NaN') text = '∞';
+        textObj.textContent = text;
+    }
+}));
 
 // delete one character when DELETE button is pressed
 deleteBtn.addEventListener('click', () => {
@@ -95,24 +110,14 @@ resultBtn.addEventListener('click', () => {
     }
 }); 
 
-// perform a percent operation when a PERCENT button was clicked
-percentBtn.addEventListener('click', () => {
-    let textRaw = text + '%'; // how the text looks before application
-    if(textRaw.length > 1 && textRaw.match(/(\d+%)/)) {
-        let number = textRaw.split('%')[0];
-        text = operate('%', number);
-        textObj.textContent = text;
-    }
-});
-
-// perform a sqrt operation when a SQRT button was clicked
-sqrtBtn.addEventListener('click', () => {
-    if (text.match(/(\d+[+\-\/*^])/)) {
+// reverse the sign of the 
+reverseSignBtn.addEventListener('click', () => {
+    if (text.match(/(-?\d+[+\-\/*^])/)) {
         text = text.slice(0, -1);
     }
-    if(text.match(/(\d+)/) || text.match(/(\d+\.\d+)/)) {
+    if(text.match(/(-?\d+)/) || text.match(/(-?\d+\.\d+)/)) {
         let number = Number(text);
-        text = operate('√', number)+'';
+        text = operate('%', number);
         textObj.textContent = text;
     }
 });
