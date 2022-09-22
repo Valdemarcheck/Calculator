@@ -23,6 +23,8 @@ body {
     justify-content: center;
 }
 
+/* Calculator and general styles */
+
 .calculator {
     width: 50rem;
     height: 60rem;
@@ -123,10 +125,15 @@ button {
     box-shadow: 1px 1px 2px black;
 }
 
+button:hover {
+    background-color: #3d3d3d;
+}
+
 button:active {
     box-shadow: none;
     background-color: #a292ff;
 }
+
 
 .result {
     background-color: #8d7cef;
@@ -142,4 +149,19 @@ button:active {
     background-position: center;
     background-size: 4rem auto;
     background-repeat: no-repeat;
+}
+
+/* Extras styles */
+
+.extras-unlock {
+    position: relative;
+    bottom: 30rem;
+    left: 82rem;
+    border: 1px solid #efd07c;
+}
+
+button:active {
+    box-shadow: none;
+    background-color: #efd07c;
+    color: #1a1b1f;
 }
