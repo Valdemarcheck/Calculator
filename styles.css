@@ -136,3 +136,10 @@ button:active {
 .delete {
     border: 1px solid #8d7cef;
 }
+
+.delete {
+    background-image: url('./images/icons8-backspace-90.png');
+    background-position: center;
+    background-size: 4rem auto;
+    background-repeat: no-repeat;
+}
