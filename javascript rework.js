@@ -3,7 +3,12 @@ let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 // choose an event type for buttons that is appropriate to the platform
 let eventType = (isMobile) ? 'touchend' : 'click';
 
-const operandsRe = RegExp(/[*\/\-+^]/g);
+const operandsRe = RegExp(/[\+\-\/\*\^]/g);
+const firstImportance = RegExp(/\^/g);
+const secondImportance = RegExp(/[\/\*]/g);
+const thirdImportance = RegExp(/[\+\-]/g);
+const allImportances = [firstImportance, secondImportance, thirdImportance];
+let canSolve;
 
 // function with all basic operations
 function operate(operator, num1, num2 = null) {
@@ -73,7 +78,7 @@ function validateNum(num) {
 }
 
 function validate(str) {
-
+    canSolve = false;
     let strDissect = str.split('');
     let strOperands = [];
     let strNums = [];
@@ -101,7 +106,7 @@ function validate(str) {
 
     // execute only if there is an operand in a string
     if (strDissect.some(char => char.match(operandsRe))) { 
-
+        canSolve = true;
         strOperands = strCopy.match(operandsRe); // a list of all operands
 
         // make a list of all number in the expression
@@ -125,13 +130,12 @@ function validate(str) {
 }
 
 function solve(str) {
-    console.log(str);
     let strOperands = str.match(operandsRe);
     let strNums = str.split(operandsRe);
     let validExpr = [];
     let i = 1;
-    strNums = strNums.map(num => num = Number(num));
-    
+    let imp = 0;
+    strNums = strNums.map(num => num = Number(num));  
     
     for(let i = 0; i < strNums.length; i++) {
         validExpr.push(strNums[i]);
@@ -139,11 +143,30 @@ function solve(str) {
     }
 
     while(true) {
-        validExpr[0] = operate(validExpr[i], validExpr[i-1], validExpr[i+1]);
-        validExpr.splice(i, 2);
+        if (i > validExpr.length-1) i = 1;
+        while (true) {
+            if (validExpr.join('').match(allImportances[imp])) {
+                break;
+            } else {
+                imp++;
+            }
+        }
+        if (validExpr[i].match(allImportances[imp])) {
+            let newNum = operate(validExpr[i], validExpr[i-1], validExpr[i+1]);
+            console.log(validExpr.splice(i-1, 3));
+            if (!validExpr[i-2]) {
+                validExpr.unshift(newNum)
+            } else if (!validExpr[i+2]) {
+                validExpr.push(newNum)
+            } else {
+                validExpr[i] = newNum
+            };
+        } else i += 2;
+        console.log('result ' + validExpr);
         if(validExpr.length === 1) break;
     }
-    return validExpr;
+    if (validExpr[0] === Infinity) validExpr[0] = '∞';
+    return validExpr[0];
 }
 
 // get screen text
@@ -170,12 +193,13 @@ const deleteBtn = document.querySelector('.delete');
 
 resultBtn.addEventListener('click', () => {
    text = validate(text);
-   text = solve(text);
+   if (canSolve) text = solve(text);
    textObj.textContent = text;
 });
 
 clearBtn.addEventListener('click', () => {
-    location.reload();
+    text = '...';
+    textObj.textContent = text;
 });
 
 deleteBtn.addEventListener('click', () => {
@@ -189,11 +213,13 @@ pointBtn.addEventListener('click', () => {
 });
 
 operandBtns.forEach(btn => btn.addEventListener('click', () => {
+    if (text === '...') text = '';
     text += btn.textContent;
     textObj.textContent = text;
 }));
 
 numberBtns.forEach(btn => btn.addEventListener('click', () => {
+    if (text === '...') text = '';
     text += btn.textContent;
     textObj.textContent = text;
 }));
