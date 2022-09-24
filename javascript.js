@@ -1,9 +1,7 @@
 
 // BUG: it's possible to get ∞ with ROOT because it doesn't cut off operands sometimes
 // BUG: ^ can vanish the second part of the expression
-// BUG: you can stack dots with zeros
 // BUG: you can put zeros after a number in a decimal
-// BUG: 0. + 0 = 0, not 0.0
 
 // check user's platform (PC or mobile)
 let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
