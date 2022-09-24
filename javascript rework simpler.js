@@ -67,15 +67,15 @@ function operate(operator, num1, num2 = null) {
     return parseFloat(result.toFixed(10));
 }
 
-function validateNum(num) {
-    let numPoints = num.match(/\./g);
-    let numDissect = num.split('');
-    if (numPoints.length > 1) {
-        let indexOfFirstPoint = numDissect.indexOf('.', numDissect.indexOf('.')) + 2;
-        numDissect.splice(indexOfFirstPoint);
-    }
-    return numDissect.join('');
-}
+// function validateNum(num) {
+//     let numPoints = num.match(/\./g);
+//     let numDissect = num.split('');
+//     if (numPoints.length > 1) {
+//         let indexOfFirstPoint = numDissect.indexOf('.', numDissect.indexOf('.')) + 2;
+//         numDissect.splice(indexOfFirstPoint);
+//     }
+//     return numDissect.join('');
+// }
 
 function validate(str) {
     canSolve = false;
@@ -86,9 +86,8 @@ function validate(str) {
     
     // remove all chaining operands
     for(let i = 0; i < strDissect.length; i++) {
-        if(strDissect[i].match(operandsRe) && strDissect[i+1] !== '-' && strDissect[i+1].match(operandsRe)) {
-            strDissect.splice(i, 1);
-            i--;
+        if(strDissect[i].match(operandsRe) && strDissect[i+1].match(operandsRe) && strDissect[i+1] !== '-') {
+            return str;
         }
     };
 
