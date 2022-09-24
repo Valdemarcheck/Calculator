@@ -176,14 +176,14 @@ let text = '';
 // get all number and operand buttons
 const numberBtns = Array.from(document.querySelectorAll('.number'));
 const operandBtns = Array.from(document.querySelectorAll('.operations > .basic'));
-const trigoBtns = document.querySelectorAll('.section > .basic');
-const logarithmBtns = document.querySelectorAll('.log');
+// const trigoBtns = document.querySelectorAll('.section > .basic');
+// const logarithmBtns = document.querySelectorAll('.log');
 
-// special operands
-const factorialBtn = document.querySelector('.factorial');
-const sqrtBtn = document.querySelector('.sqrt');
-const percentBtn = document.querySelector('.percent');
-const reverseSignBtn = document.querySelector('.plus-minus');
+// // special operands
+// const factorialBtn = document.querySelector('.factorial');
+// const sqrtBtn = document.querySelector('.sqrt');
+// const percentBtn = document.querySelector('.percent');
+// const reverseSignBtn = document.querySelector('.plus-minus');
 
 // not operands and number buttons, with unique functionality
 const pointBtn = document.querySelector('.point');
